@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-dragonfly-brown: #4A3728;
+  --color-dragonfly-brown-light: #6B5344;
+  --color-dragonfly-green: #5C6B4F;
+  --color-dragonfly-green-light: #7A8B6C;
+  --color-dragonfly-cream: #FAF6F1;
+  --color-dragonfly-surface: #FFFFFF;
+  --color-dragonfly-muted: #9B8E7E;
+  --color-dragonfly-text: #1A1A1A;
+  --color-dragonfly-gold: #C4A77D;
+  --color-dragonfly-taupe: #D4C5B2;
+  --color-dragonfly-dark: #2C2218;
+  --color-dragonfly-amber: #D4A039;
+  --color-dragonfly-blue: #4A7FB5;
+  --color-dragonfly-red: #B54A4A;
+
+  --font-sans: var(--font-vazirmatn);
+}
+
+body {
+  background: var(--color-dragonfly-cream);
+  color: var(--color-dragonfly-text);
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-dragonfly-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-dragonfly-taupe);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-dragonfly-muted);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Card hover shadow utility */
+.card-shadow {
+  box-shadow: 0 1px 3px rgba(74, 55, 40, 0.08);
+}
+
+.card-shadow-hover {
+  box-shadow: 0 8px 25px rgba(74, 55, 40, 0.12);
+}
+
+/* Gradient overlay for hero */
+.hero-gradient {
+  background: linear-gradient(135deg, #5C6B4F 0%, #2C2218 50%, #4A3728 100%);
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+}
+
+/* Badge animations */
+@keyframes badge-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.badge-bounce {
+  animation: badge-bounce 0.3s ease-in-out;
+}
+
+/* Status pulse */
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.status-pulse {
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+/* RTL: Flip border-left / border-right utilities */
+[dir="rtl"] .border-l-4 {
+  border-left-width: 0;
+  border-right-width: 4px;
+}
+
+/* Hide scrollbar for tab container */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Print styles for QR code page */
+@media print {
+  body {
+    background: white !important;
+  }
+
+  .printable {
+    break-inside: avoid;
+  }
+
+  nav, button:not(.printable button), input, form {
+    display: none !important;
+  }
+}
