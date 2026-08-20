@@ -43,6 +43,7 @@ export default function AdminMenuPage() {
   const [form, setForm] = useState(defaultItem);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const fetchItems = () => {
     fetch("/api/menu")
@@ -131,6 +132,35 @@ export default function AdminMenuPage() {
       fetchItems();
     } catch (error) {
       console.error("Failed to toggle:", error);
+    }
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setForm({ ...form, image: data.url });
+      } else {
+        alert(data.error || "خطا در آپلود تصویر");
+      }
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("خطا در آپلود تصویر");
+    } finally {
+      setUploading(false);
+      e.target.value = "";
     }
   };
 
@@ -308,23 +338,40 @@ export default function AdminMenuPage() {
             />
           </div>
 
-          {/* Image URL */}
+          {/* Image Upload + URL */}
           <div>
             <label className="block text-xs font-medium text-dragonfly-muted mb-1.5">
               <ImageIcon size={12} className="inline ml-1" />
-              لینک تصویر (اختیاری)
+              تصویر آیتم (اختیاری)
             </label>
+
+            {/* File upload button */}
+            <div className="mb-2">
+              <label className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-dragonfly-cream rounded-xl text-sm text-dragonfly-muted border-2 border-dashed border-dragonfly-taupe hover:border-dragonfly-brown hover:text-dragonfly-brown cursor-pointer transition-colors">
+                <ImageIcon size={16} />
+                {uploading ? "در حال آپلود..." : "انتخاب تصویر از کامپیوتر"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={uploading}
+                  onChange={handleFileUpload}
+                />
+              </label>
+            </div>
+
+            <div className="text-center text-dragonfly-muted text-[10px] mb-2">یا</div>
+
+            {/* URL input */}
             <input
               type="url"
               value={form.image}
               onChange={(e) => setForm({ ...form, image: e.target.value })}
-              placeholder="https://example.com/photo.jpg"
+              placeholder="لینک تصویر را اینجا وارد کنید"
               className="w-full px-4 py-2.5 bg-dragonfly-cream rounded-xl text-sm text-dragonfly-text placeholder:text-dragonfly-muted/50 focus:outline-none focus:ring-2 focus:ring-dragonfly-brown/20 border border-transparent focus:border-dragonfly-brown/30"
               dir="ltr"
             />
-            <p className="text-dragonfly-muted text-[10px] mt-1">
-              لینک مستقیم تصویر را اینجا وارد کنید (مثلاً از Google Drive یا هاست دیگر)
-            </p>
+
             {/* Image preview */}
             {form.image && form.image.trim() && (
               <div className="mt-2 w-full h-32 bg-dragonfly-cream rounded-xl overflow-hidden flex items-center justify-center">
@@ -333,8 +380,7 @@ export default function AdminMenuPage() {
                   alt="پیش‌نمایش"
                   className="w-full h-full object-cover"
                   onError={(e) => {
-                    e.target.src = "";
-                    e.target.className = "hidden";
+                    e.target.style.display = "none";
                   }}
                 />
               </div>
