@@ -16,9 +16,20 @@ export default function OrderPage() {
   const [name, setName] = useState("");
   const [table, setTable] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+    if (!name.trim()) newErrors.name = "لطفاً نام خود را وارد کنید";
+    if (!table.trim()) newErrors.table = "لطفاً شماره میز را وارد کنید";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handlePlaceOrder = async () => {
     if (items.length === 0) return;
+    if (!validate()) return;
+
     setSubmitting(true);
 
     try {
@@ -33,8 +44,8 @@ export default function OrderPage() {
             quantity: i.quantity,
           })),
           total: totalPrice,
-          customerName: name || "مهمان",
-          tableNumber: table || null,
+          customerName: name.trim(),
+          tableNumber: table.trim(),
         }),
       });
 
@@ -49,6 +60,8 @@ export default function OrderPage() {
       setSubmitting(false);
     }
   };
+
+  const canSubmit = items.length > 0 && name.trim() && table.trim();
 
   return (
     <div className="min-h-screen bg-dragonfly-cream">
@@ -99,34 +112,66 @@ export default function OrderPage() {
               </AnimatePresence>
             </div>
 
-            {/* Customer info */}
+            {/* Customer info — REQUIRED */}
             <div className="bg-white rounded-2xl p-5 mb-6 space-y-4">
               <h3 className="font-semibold text-dragonfly-text text-sm">
-                اطلاعات شما
+                اطلاعات شما <span className="text-dragonfly-red">*</span>
               </h3>
               <div>
                 <label className="block text-xs text-dragonfly-muted mb-1.5">
-                  نام (اختیاری)
+                  نام <span className="text-dragonfly-red">*</span>
                 </label>
                 <input
                   type="text"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    if (errors.name) setErrors({ ...errors, name: null });
+                  }}
                   placeholder="نام شما"
-                  className="w-full px-4 py-2.5 bg-dragonfly-cream rounded-xl text-sm text-dragonfly-text placeholder:text-dragonfly-muted/60 focus:outline-none focus:ring-2 focus:ring-dragonfly-brown/20 border border-transparent focus:border-dragonfly-brown/30 transition-all"
+                  className={`w-full px-4 py-2.5 bg-dragonfly-cream rounded-xl text-sm text-dragonfly-text placeholder:text-dragonfly-muted/60 focus:outline-none focus:ring-2 transition-all ${
+                    errors.name
+                      ? "border-2 border-dragonfly-red/50 focus:ring-dragonfly-red/20"
+                      : "border border-transparent focus:border-dragonfly-brown/30 focus:ring-dragonfly-brown/20"
+                  }`}
                 />
+                {errors.name && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-dragonfly-red text-xs mt-1.5"
+                  >
+                    {errors.name}
+                  </motion.p>
+                )}
               </div>
               <div>
                 <label className="block text-xs text-dragonfly-muted mb-1.5">
-                  شماره میز (اختیاری)
+                  شماره میز <span className="text-dragonfly-red">*</span>
                 </label>
                 <input
                   type="text"
                   value={table}
-                  onChange={(e) => setTable(e.target.value)}
+                  onChange={(e) => {
+                    setTable(e.target.value);
+                    if (errors.table) setErrors({ ...errors, table: null });
+                  }}
                   placeholder="مثلاً میز ۳"
-                  className="w-full px-4 py-2.5 bg-dragonfly-cream rounded-xl text-sm text-dragonfly-text placeholder:text-dragonfly-muted/60 focus:outline-none focus:ring-2 focus:ring-dragonfly-brown/20 border border-transparent focus:border-dragonfly-brown/30 transition-all"
+                  className={`w-full px-4 py-2.5 bg-dragonfly-cream rounded-xl text-sm text-dragonfly-text placeholder:text-dragonfly-muted/60 focus:outline-none focus:ring-2 transition-all ${
+                    errors.table
+                      ? "border-2 border-dragonfly-red/50 focus:ring-dragonfly-red/20"
+                      : "border border-transparent focus:border-dragonfly-brown/30 focus:ring-dragonfly-brown/20"
+                  }`}
                 />
+                {errors.table && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-dragonfly-red text-xs mt-1.5"
+                  >
+                    {errors.table}
+                  </motion.p>
+                )}
               </div>
             </div>
 
@@ -149,9 +194,15 @@ export default function OrderPage() {
                 </span>
               </div>
 
+              {!canSubmit && items.length > 0 && (
+                <p className="text-dragonfly-red text-xs text-center mb-3">
+                  لطفاً نام و شماره میز را وارد کنید
+                </p>
+              )}
+
               <Button
                 onClick={handlePlaceOrder}
-                disabled={submitting || items.length === 0}
+                disabled={submitting || !canSubmit}
                 variant="secondary"
                 size="lg"
                 className="w-full"
