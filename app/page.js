@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
-// The root page redirects to /menu
-// Customers scan the QR code on the table → goes straight to the menu
+// Root redirects to the welcome animation page
+// Customers scan QR → see welcome animation → go to menu
 export default function Home() {
-  redirect("/menu");
+  redirect("/welcome");
 }

@@ -75,7 +75,7 @@ export default function QRPrintPage() {
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://yourdomain.com/menu"
+placeholder="http://192.168.100.4:3000/welcome"
             className="w-full px-4 py-3 border border-dragonfly-taupe rounded-xl text-sm text-dragonfly-text placeholder:text-dragonfly-muted/50 focus:outline-none focus:ring-2 focus:ring-dragonfly-brown/20"
           />
         </div>
