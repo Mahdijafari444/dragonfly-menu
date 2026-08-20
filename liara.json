@@ -1,0 +1,9 @@
+{
+  "image": "node:20",
+  "platform": "node",
+  "app": "dragonfly-menu",
+  "port": 3000,
+  "build": "npm install && npm run build",
+  "start": "npm start",
+  "regions": ["ir-thr-1"]
+}

@@ -22,30 +22,6 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Nav links */}
-          <div className="hidden sm:flex items-center gap-6">
-            <Link
-              href="/menu"
-              className={`text-sm font-medium transition-colors ${
-                pathname === "/menu"
-                  ? "text-dragonfly-brown"
-                  : "text-dragonfly-muted hover:text-dragonfly-brown"
-              }`}
-            >
-              منو
-            </Link>
-            <Link
-              href="/admin"
-              className={`text-sm font-medium transition-colors ${
-                pathname.startsWith("/admin")
-                  ? "text-dragonfly-brown"
-                  : "text-dragonfly-muted hover:text-dragonfly-brown"
-              }`}
-            >
-              مدیریت
-            </Link>
-          </div>
-
           {/* Cart */}
           <Link
             href="/order"

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, Loader2, Image as ImageIcon } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import Modal from "@/components/ui/Modal";
@@ -12,6 +12,7 @@ const defaultItem = {
   description: "",
   price: "",
   category: "drinks",
+  image: "",
   available: true,
   featured: false,
 };
@@ -26,6 +27,12 @@ const categoryColors = {
   drinks: "light-green",
   foods: "gold",
   desserts: "brown",
+};
+
+const categoryIcons = {
+  drinks: "☕",
+  foods: "🍽️",
+  desserts: "🍰",
 };
 
 export default function AdminMenuPage() {
@@ -64,6 +71,7 @@ export default function AdminMenuPage() {
       description: item.description,
       price: item.price.toString(),
       category: item.category,
+      image: item.image || "",
       available: item.available,
       featured: item.featured,
     });
@@ -181,6 +189,26 @@ export default function AdminMenuPage() {
                           !item.available ? "opacity-50" : ""
                         }`}
                       >
+                        {/* Image preview */}
+                        <div className="w-12 h-12 rounded-lg bg-dragonfly-cream flex items-center justify-center overflow-hidden flex-shrink-0">
+                          {item.image && item.image.trim() ? (
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.target.style.display = "none";
+                                e.target.nextSibling.style.display = "flex";
+                              }}
+                            />
+                          ) : null}
+                          <span
+                            className={`text-xl ${item.image ? "hidden" : "flex"}`}
+                          >
+                            {categoryIcons[item.category] || "🍽️"}
+                          </span>
+                        </div>
+
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-0.5">
                             <h3 className="font-medium text-dragonfly-text text-sm truncate">
@@ -208,9 +236,7 @@ export default function AdminMenuPage() {
                                 : "text-dragonfly-muted hover:bg-gray-100"
                             }`}
                             title={
-                              item.available
-                                ? "ناموجود کردن"
-                                : "موجود کردن"
+                              item.available ? "ناموجود کردن" : "موجود کردن"
                             }
                           >
                             {item.available ? (
@@ -280,6 +306,39 @@ export default function AdminMenuPage() {
               rows={2}
               className="w-full px-4 py-2.5 bg-dragonfly-cream rounded-xl text-sm text-dragonfly-text placeholder:text-dragonfly-muted/50 focus:outline-none focus:ring-2 focus:ring-dragonfly-brown/20 border border-transparent focus:border-dragonfly-brown/30 resize-none"
             />
+          </div>
+
+          {/* Image URL */}
+          <div>
+            <label className="block text-xs font-medium text-dragonfly-muted mb-1.5">
+              <ImageIcon size={12} className="inline ml-1" />
+              لینک تصویر (اختیاری)
+            </label>
+            <input
+              type="url"
+              value={form.image}
+              onChange={(e) => setForm({ ...form, image: e.target.value })}
+              placeholder="https://example.com/photo.jpg"
+              className="w-full px-4 py-2.5 bg-dragonfly-cream rounded-xl text-sm text-dragonfly-text placeholder:text-dragonfly-muted/50 focus:outline-none focus:ring-2 focus:ring-dragonfly-brown/20 border border-transparent focus:border-dragonfly-brown/30"
+              dir="ltr"
+            />
+            <p className="text-dragonfly-muted text-[10px] mt-1">
+              لینک مستقیم تصویر را اینجا وارد کنید (مثلاً از Google Drive یا هاست دیگر)
+            </p>
+            {/* Image preview */}
+            {form.image && form.image.trim() && (
+              <div className="mt-2 w-full h-32 bg-dragonfly-cream rounded-xl overflow-hidden flex items-center justify-center">
+                <img
+                  src={form.image}
+                  alt="پیش‌نمایش"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.src = "";
+                    e.target.className = "hidden";
+                  }}
+                />
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">

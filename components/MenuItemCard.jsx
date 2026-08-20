@@ -31,7 +31,11 @@ export default function MenuItemCard({ item, index = 0 }) {
   const [showModal, setShowModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
+  const [imgError, setImgError] = useState(false);
+  const [modalImgError, setModalImgError] = useState(false);
   const { addItem } = useCart();
+
+  const hasImage = item.image && item.image.trim() && !imgError;
 
   const handleAdd = () => {
     addItem(item, quantity);
@@ -40,6 +44,7 @@ export default function MenuItemCard({ item, index = 0 }) {
       setJustAdded(false);
       setShowModal(false);
       setQuantity(1);
+      setModalImgError(false);
     }, 600);
   };
 
@@ -55,11 +60,20 @@ export default function MenuItemCard({ item, index = 0 }) {
           onClick={item.available ? () => setShowModal(true) : undefined}
           className={`overflow-hidden ${!item.available ? "opacity-60" : ""}`}
         >
-          {/* Image placeholder */}
-          <div className="relative h-44 bg-gradient-to-bl from-dragonfly-taupe/40 to-dragonfly-cream flex items-center justify-center">
-            <span className="text-5xl">
-              {categoryIcons[item.category] || "🍽️"}
-            </span>
+          {/* Image */}
+          <div className="relative h-44 bg-gradient-to-bl from-dragonfly-taupe/40 to-dragonfly-cream flex items-center justify-center overflow-hidden">
+            {hasImage ? (
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-full object-cover"
+                onError={() => setImgError(true)}
+              />
+            ) : (
+              <span className="text-5xl">
+                {categoryIcons[item.category] || "🍽️"}
+              </span>
+            )}
             {!item.available && (
               <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
                 <Badge color="gray">ناموجود</Badge>
@@ -115,15 +129,25 @@ export default function MenuItemCard({ item, index = 0 }) {
         onClose={() => {
           setShowModal(false);
           setQuantity(1);
+          setModalImgError(false);
         }}
         title={item.name}
       >
         <div className="p-6">
-          {/* Large icon */}
-          <div className="w-full h-48 bg-gradient-to-bl from-dragonfly-taupe/30 to-dragonfly-cream rounded-xl flex items-center justify-center mb-5">
-            <span className="text-7xl">
-              {categoryIcons[item.category] || "🍽️"}
-            </span>
+          {/* Large image */}
+          <div className="w-full h-48 bg-gradient-to-bl from-dragonfly-taupe/30 to-dragonfly-cream rounded-xl flex items-center justify-center mb-5 overflow-hidden">
+            {hasImage && !modalImgError ? (
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-full object-cover"
+                onError={() => setModalImgError(true)}
+              />
+            ) : (
+              <span className="text-7xl">
+                {categoryIcons[item.category] || "🍽️"}
+              </span>
+            )}
           </div>
 
           {/* Info */}
