@@ -61,7 +61,7 @@ export default function QRPrintPage() {
     <div className="min-h-screen bg-white p-8">
       <div className="max-w-md mx-auto text-center">
         <h1 className="text-2xl font-bold text-dragonfly-text mb-2">
-          🪰 دراگونفلای — ساخت کد QR
+          🪰 دراگون فلای — ساخت کد QR
         </h1>
         <p className="text-dragonfly-muted text-sm mb-8">
           کد QR بسازید و روی میزها چاپ کنید
@@ -101,7 +101,7 @@ placeholder="http://192.168.100.4:3000/welcome"
               />
               <div className="mt-6">
                 <p className="text-2xl font-bold text-dragonfly-brown">
-                  دراگونفلای
+                  دراگون فلای
                 </p>
                 <p className="text-dragonfly-muted text-sm mt-1">
                   منوی ما را با اسکن مشاهده کنید

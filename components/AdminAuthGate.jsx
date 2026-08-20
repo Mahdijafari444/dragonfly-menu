@@ -50,7 +50,7 @@ export default function AdminAuthGate({ children }) {
         </div>
 
         <h1 className="text-xl font-bold text-dragonfly-text mb-1">
-          پنل مدیریت دراگونفلای
+          پنل مدیریت دراگون فلای
         </h1>
         <p className="text-dragonfly-muted text-sm mb-8">
           رمز عبور را وارد کنید

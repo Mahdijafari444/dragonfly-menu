@@ -53,7 +53,7 @@ export default function AdminSidebar() {
           </div>
           <div>
             <h1 className="text-white font-semibold text-sm">
-              دراگونفلای
+              دراگون فلای
             </h1>
             <p className="text-dragonfly-muted text-xs">پنل مدیریت</p>
           </div>

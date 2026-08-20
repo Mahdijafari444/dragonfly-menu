@@ -18,7 +18,7 @@ export default function Navbar() {
           <Link href="/menu" className="flex items-center gap-2.5">
             <span className="text-2xl">🪰</span>
             <span className="font-semibold text-lg text-dragonfly-brown">
-              دراگونفلای
+              دراگون فلای
             </span>
           </Link>
 

@@ -97,7 +97,7 @@ export default function WelcomePage() {
                 <span className="text-5xl">🪰</span>
               </div>
               <h1 className="text-5xl sm:text-7xl font-bold text-white mb-2">
-                دراگونفلای
+                دراگون فلای
               </h1>
             </motion.div>
           )}
@@ -113,7 +113,7 @@ export default function WelcomePage() {
                 <span className="text-5xl">🪰</span>
               </div>
               <h1 className="text-5xl sm:text-7xl font-bold text-white mb-3">
-                دراگونفلای
+                دراگون فلای
               </h1>
               <motion.p
                 initial={{ opacity: 0 }}

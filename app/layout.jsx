@@ -9,9 +9,9 @@ const vazirmatn = Vazirmatn({
 });
 
 export const metadata = {
-  title: "Dragonfly — کافه دراگونفلای",
+  title: "Dragonfly — کافه دراگون فلای",
   description:
-    "منوی کافه دراگونفلای — نوشیدنی‌های دست‌ساز و غذاهای خوشمزه در فضایی صمیمی.",
+    "منوی کافه دراگون فلای — نوشیدنی‌های دست‌ساز و غذاهای خوشمزه در فضایی صمیمی.",
 };
 
 export default function RootLayout({ children }) {
